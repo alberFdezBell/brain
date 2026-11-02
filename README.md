@@ -1,95 +1,161 @@
-# Project Brain: Sistema de Memoria Persistente de Segunda Generación
+# 🧠 Project Brain
+### El Cerebro Persistente y Memoria Universal para tus Asistentes de IA
 
-**Project Brain** es una infraestructura de memoria persistente para proyectos asistidos por Inteligencia Artificial. Diseñado como una bóveda unificada de Obsidian compuesta por sub-bóvedas por proyecto y una transversal (`_global`), garantiza que cualquier asistente IA (Antigravity, Claude Code, Gemini CLI, Cursor o modelos locales) comience cada sesión conociendo el historial técnico anterior, y que puedas responder dentro de meses o años a la pregunta:
-> *"¿Cómo hicimos X en el proyecto Y, con qué fecha, comandos y commits?"*
+**Dale memoria a largo plazo a Claude Code, Antigravity, Cursor, Copilot y modelos locales.**  
+*Sin amnesia. Sin bases de datos complejas. 100% privado, local y basado en Markdown.*
 
----
+[![Local & Private](https://img.shields.io/badge/Privacy-100%25_Local-brightgreen.svg)]()
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)]()
+[![Obsidian Ready](https://img.shields.io/badge/Obsidian-Ready-7C3AED.svg)]()
+[![GPU Accelerated](https://img.shields.io/badge/GPU_Vulkan-115%2B_tok%2Fs-purple.svg)]()
+[![License MIT](https://img.shields.io/badge/License-MIT-green.svg)]()
 
-## 1. Principios de Diseño Fundamentales
-
-1. **Solo Markdown plano + YAML frontmatter**: Formato abierto, portable, sin dependencias propietarias ni bases de datos binarias. Durabilidad garantizada por décadas.
-2. **Agnóstico de herramienta**: La fuente canónica de verdad son los archivos en `$BRAIN_HOME` (`~/Brain`). Antigravity, Claude Code o Gemini son clientes intercambiables.
-3. **Divulgación Progresiva y Eficiencia de Tokens**:
-   - **Capa Caliente**: `<slug>-index.md`, `<slug>-context.md`, `<slug>-todo.md` (≤150 líneas cada uno). Se cargan siempre al inicio.
-   - **Capa Templada**: Últimas 3 a 5 sesiones y notas enlazadas relevantes.
-   - **Capa Fría**: Historial archivado en `archive/`, consultado bajo demanda.
-4. **Calidad Blindada por Código**: Contrato estricto (`QUALITY.md`) validado mecánicamente por `brain-quality`. Se rechazan expresiones vagas, omisión de evidencias o secciones vacías.
-5. **Hechos por Herramienta, Narrativa por la IA**: Commits, hashes, fechas con zona horaria, ramas y diffstats se capturan automáticamente de Git; la IA redacta la síntesis conceptual y los motivos.
-6. **Cero Invención**: Si un dato no se conoce con total seguridad, se declara formalmente en "Lagunas" con `needs_review: true`.
-7. **Grafo Conectado**: Cada nota enlaza a su índice y a notas relacionadas; conceptos compartidos en `_global/concepts/` actúan como nodos puente entre proyectos.
-8. **Seguridad Proactiva**: Escaneo automatizado de credenciales, tokens y claves privadas antes de cualquier commit (`brain-lint --secrets`).
+[🚀 Comenzar en 2 Minutos](#-instalación-rápida) • [✨ Por Qué Project Brain](#-el-problema-la-amnesia-de-las-ias) • [🛠️ Características](#-características-estrella) • [💬 Brain Chat Local](#-brain-chat-tu-chatgpt-local-de-documentación) • [📖 Guía de Instalación](INSTALACION.md)
 
 ---
 
-## 2. Estructura de Directorios
+## 🤯 El Problema: La Amnesia de las IAs
+
+¿Te suena familiar alguno de estos problemas?
+- Abres una nueva ventana de chat y tu asistente **ha olvidado por completo** la arquitectura de tu proyecto.
+- Tienes que volver a explicarle tu stack, tus convenciones y qué decisiones tomaste ayer.
+- Cada asistente toma decisiones contradictorias con las que tomó otra IA horas antes.
+- Pasan tres meses y nadie (ni tú ni la IA) recuerda **por qué se implementó una solución de esa forma, qué comando se ejecutó o qué commit la introdujo**.
+
+---
+
+## 💡 La Solución: Un "Segundo Cerebro" Compartido
+
+**Project Brain** actúa como la memoria central unificada para todos tus asistentes de IA. No importa si hoy programas con **Claude Code**, mañana usas **Antigravity**, revisas código en **Cursor** o haces consultas offline desde la terminal: **todas tus IAs comparten el mismo cerebro y continúan exactamente donde lo dejó la anterior.**
 
 ```
-~/Brain/
-├── README.md                 # Documentación general y guía de uso
-├── PROTOCOL.md               # Protocolo canónico obligatorio para todas las IAs
-├── QUALITY.md                # Contrato mecánico de calidad
-├── schema/
-│   ├── VERSION               # Versión activa del esquema (v1)
-│   └── CHANGELOG.md          # Registro de cambios y guía de migraciones
-├── templates/                # Plantillas normalizadas de notas
-├── tools/                    # Herramientas en Python 3 stdlib + wrappers (.ps1 / .sh)
-├── adapters/                 # Snippets de configuración para cada asistente IA
-├── .cache/                   # Índice BM25 y marcas de tiempo (en .gitignore)
-├── _global/                  # Bóveda transversal + tags.md + concepts/
-├── <slug-proyecto>/          # Una sub-bóveda por proyecto
-├── .obsidian/                # Configuración de grafo y filtros de Obsidian
-└── .gitignore
+       ┌─────────────────┐   ┌──────────────────┐   ┌─────────────────┐
+       │   Claude Code   │   │   Antigravity    │   │  Cursor / IDEs  │
+       └────────┬────────┘   └────────┬─────────┘   └────────┬────────┘
+                │                     │                      │
+                └──────────────┐      │      ┌───────────────┘
+                               ▼      ▼      ▼
+                        ┌─────────────────────────┐
+                        │   🧠  PROJECT BRAIN     │
+                        │  Memoria en Markdown    │
+                        │  + Control de Calidad   │
+                        │  + Rastreabilidad Git   │
+                        └─────────────┬───────────┘
+                                      │
+                   ┌──────────────────┴──────────────────┐
+                   ▼                                     ▼
+        ┌─────────────────────┐               ┌─────────────────────┐
+        │  ⚡ Brain Chat Local │               │  🌐 Grafo Obsidian  │
+        │  GPU 115+ tok/s     │               │  Navegación Visual  │
+        └─────────────────────┘               └─────────────────────┘
 ```
 
 ---
 
-## 3. Comandos Esenciales (Guía Rápida)
+## ✨ Características Estrella
 
-Todos los comandos residen en `tools/` y cuentan con wrappers `.ps1` (PowerShell en Windows) y `.sh` (Bash en Linux/macOS).
+### 🧠 1. Memoria Infinita y Multi-Agente
+Conecta cualquier asistente de IA en 2 líneas de configuración. Si cambias de herramienta, tu historial técnico, tus decisiones de arquitectura (ADRs) y tus aprendizajes siguen intactos y actualizados.
 
-| Comando | Función Principal | Ejemplo de Uso |
-| :--- | :--- | :--- |
-| **`brain-chat`** | Interfaz nativa local estilo ChatGPT (Qwen 1.5B) para consultar la documentación | `brain-chat` |
-| **`brain-ask`** | Responde preguntas futuras con paquete de evidencia, commits y línea de tiempo | `brain-ask "¿Cómo configuramos Alembic?" --project mi-api` |
-| **`brain-search`** | Búsqueda semántica/léxica con algoritmo BM25 ponderado | `brain-search "migraciones postgres"` |
-| **`brain-audit`** | Auditoría periódica de salud, huérfanas, enlaces rotos y calidad | `brain-audit` |
-| **`brain-lint`** | Verificación estricta de sintaxis, límites y escáner de secretos | `brain-lint --secrets` |
-| **`brain-doctor`** | Diagnóstico del entorno, herramientas y estado de las bóvedas | `brain-doctor` |
-| **`brain-compact`** | Archiva sesiones antiguas (>30 días) y poda archivos sobrepasados | `brain-compact mi-api` |
-| **`brain-init`** | Crea e inicializa una nueva sub-bóveda para un proyecto | `brain-init mi-app --repo-path /ruta/al/repo` |
-| **`brain-session`** | Crea el borrador de la sesión con los hechos Git volcados | `brain-session --slug mi-app --title "configurar-docker"` |
-| **`brain-quality`** | Evalúa las notas contra el contrato de calidad (score 0-100) | `brain-quality --strict --slug mi-app` |
-| **`brain-commit`** | Persiste los cambios en Git previa verificación de calidad y secretos | `brain-commit -m "Cierre de sesión: Docker implementado"` |
+### ⚡ 2. Brain Chat: Tu Asistente Local con Aceleración GPU
+Una aplicación de escritorio nativa, minimalista y ultra-rápida estilo ChatGPT:
+* **Modelo Local Integrado (Qwen 2.5 1.5B)**: Sin enviar tus datos privados a la nube ni pagar por tokens de API.
+* **Aceleración por GPU con Vulkan**: Corre a más de **115 tokens/segundo** en tarjetas AMD, NVIDIA e Intel.
+* **0 MB de consumo en reposo**: Al cerrar la ventana, libera por completo la memoria VRAM y RAM.
+* **Menciones inteligentes con `@`**: Escribe `@mi-proyecto` para enfocar las respuestas directamente en los documentos y notas de ese proyecto.
 
----
+### 🔍 3. Búsqueda Híbrida BM25 en Milisegundos
+Pregúntale a tu repositorio técnico: *"¿Cómo configuramos las migraciones de base de datos el mes pasado?"*. El motor BM25 local encuentra la nota exacta, los comandos ejecutados y el commit asociado en menos de 0.05 segundos.
 
-## 4. Cómo Añadir un Nuevo Adaptador de IA en 2 Minutos
+### 🛡️ 4. Blindaje contra Alucinaciones y Fugas de Secretos
+* **Contrato de Calidad Mecánico (`QUALITY.md`)**: El sistema analiza automáticamente las notas redactadas por la IA y rechaza textos con frases vagas, suposiciones sin comprobar o secciones vacías (puntuación estricta 0-100).
+* **Escáner de Seguridad Pre-Commit**: Bloquea automáticamente cualquier intento de persistir contraseñas, claves privadas o API keys.
 
-Project Brain es totalmente agnóstico de la herramienta de IA utilizada. Para integrar un nuevo asistente:
-
-1. Localiza el archivo de configuración o system prompt del asistente (ejemplo: `.cursorrules`, `CLAUDE.md`, `.windsurfrules`, `.copilot-instructions.md`).
-2. Copia el siguiente snippet minimalista:
-   ```markdown
-   ## Memoria Persistente (Project Brain)
-   En cada sesión y proyecto, consulta y sigue obligatoriamente `$BRAIN_HOME/PROTOCOL.md`.
-   - Al iniciar: Lee la capa caliente del proyecto y ejecuta `python ~/Brain/tools/brain-capture.py --start --slug <slug>`.
-   - Durante: Registra decisiones y aprendizajes con evidencias reales (archivos y commits).
-   - Al cerrar: La tarea no concluye hasta que `brain-session` genere la nota, `brain-quality --strict` apruebe con >= 85, y `brain-commit` guarde los cambios en Git local.
-   - Preguntas retrospectivas: Utiliza `python ~/Brain/tools/brain-ask.py "<pregunta>" --project <slug>`.
-   ```
-3. Guarda el archivo en la raíz del proyecto o en la carpeta `adapters/` de Brain para reutilización.
+### 🌐 5. Visualización del Grafo en Obsidian
+Abre tu carpeta `Brain` en Obsidian y observa el grafo de conocimiento vivo de todos tus proyectos: qué decisiones dependen de qué aprendizajes y cómo se interconectan los conceptos entre proyectos.
 
 ---
 
-## 5. Visualización del Grafo en Obsidian
+## 🚀 Instalación Rápida
 
-Para abrir y navegar el grafo de Project Brain:
-1. Abre Obsidian y selecciona **"Open folder as vault"**.
-2. Elige el directorio `~/Brain` (o `C:\Users\alber\Brain`).
-3. Abre la vista de grafo (**Graph View** o `Ctrl + G`).
-4. La configuración precargada en `.obsidian/graph.json` colorea automáticamente los nodos por su tipo:
-   - **Verde**: Mapas de contenido e índices (`-index.md`).
-   - **Azul**: Sesiones interactivas (`sessions/`).
-   - **Naranja**: Decisiones arquitectónicas ADRs (`decisions/`).
-   - **Violeta**: Aprendizajes y gotchas resueltos (`learnings/`).
-   - **Cyan**: Conceptos transversales compartidos (`concepts/`).
+La instalación configura todo automáticamente: entorno Python, modelos locales, aceleración por GPU, atajos de escritorio y adaptadores de IA.
+
+### En Windows (PowerShell)
+```powershell
+git clone https://github.com/TU-USUARIO/project-brain.git Brain
+cd Brain
+powershell -ExecutionPolicy Bypass -File .\scripts\install.ps1
+```
+
+### En Linux / macOS (Bash)
+```bash
+git clone https://github.com/TU-USUARIO/project-brain.git Brain
+cd Brain
+bash scripts/install.sh
+```
+
+> 💡 **¿Quieres todos los detalles paso a paso?** Consulta la [Guía Completa de Instalación](INSTALACION.md).
+
+---
+
+## 🔄 El Flujo de Trabajo en 3 Pasos
+
+Usar Project Brain no interrumpe tu manera de programar; la potencia:
+
+```mermaid
+flowchart LR
+    A["1. Inicio de Sesión\nLa IA lee el contexto y los pendientes"] --> B["2. Desarrollo Normal\nRegistras decisiones y aprendizajes"]
+    B --> C["3. Cierre Automático\nResumen Git + Verificación de Calidad"]
+```
+
+1. **Al iniciar**: Tu IA lee automáticamente la "Capa Caliente" (índice, contexto actual y pendientes) y empieza a capturar la sesión.
+2. **Durante el trabajo**: Si tomas una decisión técnica de peso o resuelves un bug difícil, se guarda como decisión (ADR) o aprendizaje con su comando y commit real.
+3. **Al finalizar**: Se ejecuta el cierre automático. Brain recopila los commits de Git, redacta el resumen de sesión, valida la calidad mecánica y persiste los cambios.
+
+---
+
+## 🧰 Caja de Herramientas (CLI)
+
+| Comando | Lo que hace por ti |
+| :--- | :--- |
+| **`brain-chat`** | Abre el asistente de escritorio local con IA para chatear con tus proyectos. |
+| **`brain-ask`** | Responde preguntas sobre el pasado con evidencia histórica y commits (`brain-ask "¿Cómo desplegamos en AWS?"`). |
+| **`brain-search`** | Búsqueda ultrarrápida BM25 en todo tu historial técnico. |
+| **`brain-init`** | Registra y conecta un nuevo proyecto a tu cerebro en 1 segundo. |
+| **`brain-doctor`** | Diagnostica el estado de tus herramientas, modelos y dependencias. |
+| **`brain-audit`** | Audita enlaces rotos, notas desactualizadas o proyectos sin indexar. |
+
+---
+
+## 🔌 Conecta tus Asistentes de IA en Segundos
+
+Project Brain funciona simplemente añadiendo una instrucción a las reglas de tu asistente favorito:
+
+<details>
+<summary><b>Haz clic para ver las instrucciones para Claude Code, Antigravity, Cursor, etc.</b></summary>
+
+Añade este bloque en tu archivo `.cursorrules`, `CLAUDE.md`, o en las reglas de tu asistente:
+
+```markdown
+## Memoria Persistente (Project Brain)
+En cada sesión, consulta `$BRAIN_HOME/PROTOCOL.md`.
+- Al inicio: Lee la capa caliente del proyecto y ejecuta `python ~/Brain/tools/brain-capture.py --start --slug <proyecto>`.
+- Durante: Registra decisiones y aprendizajes con evidencias reales (archivos y commits).
+- Al finalizar: Ejecuta `brain-session`, valida con `brain-quality --strict` y persiste con `brain-commit`.
+```
+
+</details>
+
+---
+
+## 🔒 Privacidad y Control Total
+
+* **Sin Cloud Propietaria**: Todo vive en archivos locales `.md`. Puedes leerlos, editarlos o moverlos cuando quieras.
+* **Sin Vendor Lock-in**: Si una empresa de IA cierra o cambia sus políticas, tu historial de ingeniería sigue siendo tuyo para siempre.
+* **100% Offline**: El buscador, el linter, el validador de calidad y el Brain Chat funcionan sin conexión a Internet.
+
+---
+
+## 📄 Licencia
+
+Distribuido bajo la Licencia MIT. Consulta `LICENSE` para más información.
