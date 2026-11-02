@@ -1,0 +1,63 @@
+# ==============================================================================
+# Project Brain - .gitignore
+# Repositorio Público de Memoria Persistente para Asistentes de IA
+# ==============================================================================
+
+# 1. Modelos de Lenguaje Locales y Binarios de Inferencia (GGUF / Llama.cpp)
+*.gguf
+*.bin
+*.safetensors
+*.pt
+*.onnx
+bin/
+models/
+tools/bin/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# 2. Caché y Datos Efímeros de Búsqueda
+.cache/
+*.tmp
+*.temp
+*.log
+*.bak
+
+# 3. Entornos Virtuales y Bytecode de Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+ENV/
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# 4. Obsidian (Preserva configuraciones globales, ignora estados de ventana locales)
+.obsidian/workspace*
+.obsidian/cache*
+.obsidian/indexed*
+
+# 5. Archivos del Sistema Operativo y Editores
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# 6. Secretos y Variables de Entorno Locales
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
