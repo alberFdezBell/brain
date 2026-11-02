@@ -4,7 +4,7 @@
 **Dale memoria a largo plazo a Claude Code, Antigravity, Cursor, Copilot y modelos locales.**  
 *Sin amnesia. Sin bases de datos complejas. 100% privado, local y basado en Markdown.*
 
-[Comenzar en 2 Minutos](#-instalación-rápida) • [Por Qué Project Brain](#-el-problema-la-amnesia-de-las-ias) • [Características](#-características-estrella) • [Brain Chat Local](#-brain-chat-tu-chatgpt-local-de-documentación) • [Guía de Instalación](INSTALACION.md)
+[Guía de Instalación](INSTALACION.md)
 
 ---
 
