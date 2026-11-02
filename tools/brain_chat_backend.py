@@ -61,6 +61,8 @@ class LlamaServerManager:
             "--port", str(self.port),
             "-c", "4096",
             "--n-predict", "1024",
+            "-ngl", "99",
+            "--no-warmup",
             "-t", "4",
             "--repeat-penalty", "1.15",
             "--repeat-last-n", "64",
@@ -81,9 +83,9 @@ class LlamaServerManager:
             creationflags=creationflags
         )
 
-        # Esperar a que el servidor esté listo (arranca en ~500ms gracias a mmap)
+        # Esperar a que el servidor esté listo (arranca en ~500ms gracias a mmap / VRAM)
         start_time = time.time()
-        while time.time() - start_time < 15.0:
+        while time.time() - start_time < 25.0:
             if self.is_running():
                 return True
             time.sleep(0.1)

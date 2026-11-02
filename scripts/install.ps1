@@ -127,20 +127,19 @@ if ((Test-Path $serverExe) -and (Test-Path $modelFile)) {
     if ($shouldDownload) {
         if (-not (Test-Path $serverExe)) {
             Write-Notice "Descargando llama-server.exe..."
-            $serverUrl = "https://github.com/ggerganov/llama.cpp/releases/download/b4400/llama-b4400-bin-win-avx2-x64.zip"
+            $serverUrl = "https://github.com/ggml-org/llama.cpp/releases/download/b4400/llama-b4400-bin-win-vulkan-x64.zip"
             $zipPath = "$BrainHome\.cache\llama-bin.zip"
             try {
                 Invoke-WebRequest -Uri $serverUrl -OutFile $zipPath -UseBasicParsing
                 Expand-Archive -Path $zipPath -DestinationPath "$BrainHome\.cache\llama-temp" -Force
-                $extractedExe = Get-ChildItem "$BrainHome\.cache\llama-temp" -Filter "llama-server.exe" -Recurse | Select-Object -First 1
-                if ($extractedExe) {
-                    Move-Item -Path $extractedExe.FullName -Destination $serverExe -Force
-                    Write-Success "llama-server.exe instalado en tools\bin\"
+                Get-ChildItem "$BrainHome\.cache\llama-temp" -Recurse | Where-Object { $_.Extension -in ".exe", ".dll" } | ForEach-Object {
+                    Move-Item -Path $_.FullName -Destination "$BrainHome\tools\bin\$($_.Name)" -Force
                 }
+                Write-Success "Motor llama.cpp con aceleracion GPU (Vulkan) instalado en tools\bin\"
                 Remove-Item -Path "$BrainHome\.cache\llama-temp" -Recurse -Force -ErrorAction SilentlyContinue
                 Remove-Item -Path $zipPath -Force -ErrorAction SilentlyContinue
             } catch {
-                Write-Warn "No se pudo descargar automaticamente llama-server.exe. Puedes colocarlo manualmente en '$BrainHome\tools\bin\'."
+                Write-Warn "No se pudo descargar automaticamente llama.cpp Vulkan. Puedes colocar los binarios manualmente en '$BrainHome\tools\bin\'."
             }
         }
 
