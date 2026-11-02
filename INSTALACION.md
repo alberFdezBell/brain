@@ -170,7 +170,51 @@ python tools/brain_chat.py
 
 ---
 
-## 6. Migración y Gestión de Bóvedas
+## 6. Acceso Directo en el Escritorio (Icono Cerebro y Cero Consolas)
+
+Puedes crear un acceso directo en tu Escritorio para abrir **Brain Chat** con un solo doble clic, luciendo el icono nativo de `cerebro.ico` y ejecutándose limpiamente sin ventanas negras de consola.
+
+### Opción A: Creación Automática (1 Comando)
+
+* **En Windows (PowerShell)**:
+  ```powershell
+  powershell -ExecutionPolicy Bypass -File .\scripts\create_shortcut.ps1
+  ```
+  *(Crea automáticamente `Project Brain.lnk` en tu Escritorio vinculado a `pythonw.exe` y a `assets\cerebro.ico`)*.
+
+* **En Linux / macOS (Bash)**:
+  ```bash
+  chmod +x scripts/create_shortcut.sh
+  ./scripts/create_shortcut.sh
+  ```
+  *(Crea un lanzador `.desktop` en `~/.local/share/applications/` y en tu Escritorio)*.
+
+---
+
+### Opción B: Creación Manual en Windows (Paso a Paso)
+
+Si prefieres crearlo manualmente:
+
+1. Ve a tu **Escritorio**, haz clic derecho en un espacio vacío y selecciona **Nuevo > Acceso directo**.
+2. En la casilla **Escriba la ubicación del elemento**, introduce:
+   ```cmd
+   pythonw.exe "C:\Users\tu-usuario\Brain\tools\brain_chat.py"
+   ```
+   > [!TIP]
+   > Usar `pythonw.exe` en lugar de `python.exe` es el truco estándar de Windows para ejecutar aplicaciones de interfaz gráfica de Python **sin que aparezca ninguna ventana negra de terminal de fondo**.
+3. Haz clic en **Siguiente** y ponle de nombre: `Project Brain`.
+4. Haz clic derecho sobre el acceso directo recién creado y selecciona **Propiedades**.
+5. En la pestaña **Acceso directo**:
+   * En **Iniciar en**, escribe la ruta a tu carpeta Brain: `C:\Users\tu-usuario\Brain`
+   * Haz clic en el botón **Cambiar icono...**
+   * Pulsa **Examinar...**, navega hasta `C:\Users\tu-usuario\Brain\assets\cerebro.ico` y selecciona el icono.
+6. Pulsa **Aceptar** y luego **Aplicar**.
+
+¡Listo! Ya tienes un icono de escritorio profesional con el cerebro que abre tu asistente local al instante.
+
+---
+
+## 7. Migración y Gestión de Bóvedas
 
 Cada proyecto documentado vive dentro de su propia carpeta bóveda (`<slug>/`).
 
@@ -276,7 +320,7 @@ Esto creará la estructura estándar en `Brain/mi-nuevo-proyecto/` con sus plant
 
 ---
 
-## 7. Preparación y Subida a GitHub
+## 8. Preparación y Subida a GitHub
 
 Project Brain está configurado con un archivo `.gitignore` estricto que previene la fuga de pesos pesados (`*.gguf`), binarios (`*.exe`), archivos efímeros de caché (`.cache/`, `*.tmp`) y estados locales de Obsidian.
 
@@ -300,7 +344,7 @@ git push -u origin main
 
 ---
 
-## 8. Tabla Rápida de Comandos CLI (Cheat Sheet)
+## 9. Tabla Rápida de Comandos CLI (Cheat Sheet)
 
 | Comando | Descripción |
 | :--- | :--- |
@@ -319,6 +363,6 @@ git push -u origin main
 
 ---
 
-## 9. Soporte y Licencia
+## 10. Soporte y Licencia
 
 Project Brain es software libre y de código abierto diseñado para maximizar la autonomía, reproducibilidad y memoria a largo plazo en equipos que desarrollan con inteligencia artificial.
